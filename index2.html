@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>FoxRun IDE</title>
+
+	<link rel="stylesheet" href="styles/reset.css">
+	<link rel="stylesheet" href="styles/site.css">
+	<link rel="stylesheet" href="styles/panel.css">
+
+	<script src="scripts/site.js" defer></script>
+	<script src="scripts/panel.js" defer></script>
+	<script src="scripts/editor-php.js" defer></script>
+</head>
+
+<body>
+	<header>
+		<span class="course-title">PHP Dynamic Web Applications</span>
+		<span class="assignment-title">Code Practice 3.1</span>
+	</header>
+	<main>
+		<div class="panel" id="editor"></div>
+		<div class="resize-handle"></div>
+		<div class="panel">
+			<div class="controls">
+				<button id="run">
+					<svg class="play-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
+						width="24px" fill="#e3e3e3">
+						<path d="M320-200v-560l440 280-440 280Zm80-280Zm0 134 210-134-210-134v268Z" />
+					</svg>
+					<span class="spinner">
+						<svg width="18" height="18" viewBox="0 0 50 50">
+							<circle cx="25" cy="25" r="20" fill="none" stroke="#e6edf3" stroke-width="5"
+								stroke-linecap="round" stroke-dasharray="31.4 31.4" transform="rotate(-90 25 25)">
+							</circle>
+						</svg>
+					</span>
+					<span>Run</span>
+				</button>
+				<button id="submit">
+					<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+						fill="#e3e3e3">
+						<path
+							d="m438-240 226-226-58-58-169 169-84-84-57 57 142 142ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z" />
+					</svg>
+					<span>Submit</span>
+				</button>
+				<button id="reset">
+					<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+						fill="#e3e3e3">
+						<path
+							d="M480-80q-75 0-140.5-28.5t-114-77q-48.5-48.5-77-114T120-440h80q0 117 81.5 198.5T480-160q117 0 198.5-81.5T760-440q0-117-81.5-198.5T480-720h-6l62 62-56 58-160-160 160-160 56 58-62 62h6q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-440q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-80Z" />
+					</svg>
+					<span>Reset</span>
+				</button>
+				<div>
+					<select id="output-type">
+						<option value="instructions" selected>Instructions</option>
+						<option value="program">Program Output</option>
+						<option value="build">Build Output</option>
+					</select>
+				</div>
+			</div>
+			<div id="instructions" style="display:block;">
+				<strong>Code Practice 3.1 Instructions:</strong><br><br>
+				Echo your name.<br>
+				Then, use a loop to print all even numbers from 1 to 20, inclusive.
+				Each number should be printed on a new line.
+			</div>
+			<pre id="output" style="display:none;"></pre>
+		</div>
+	</main>
+</body>
+
+</html>

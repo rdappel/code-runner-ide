@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Piston Test</title>
+  <style>
+    body { font-family: monospace; padding: 1rem; background: #222; color: #eee; }
+    textarea { width: 100%; height: 200px; background: #111; color: #0f0; padding: 0.5rem; }
+    pre { background: #111; padding: 0.5rem; }
+    button { margin: 0.5rem 0; padding: 0.5rem 1rem; }
+  </style>
+</head>
+<body>
+  <h1>Piston Test</h1>
+  <label>
+    Language:
+    <input id="language" value="python">
+  </label>
+  <br>
+  <label>
+    Version (optional):
+    <input id="version" placeholder="leave blank for latest">
+  </label>
+  <br>
+  <textarea id="code">print("Hello from Piston!")</textarea>
+  <br>
+  <button id="run">Run</button>
+
+  <h2>Output</h2>
+  <pre id="output"></pre>
+
+  <script>
+    async function runCode() {
+      const language = document.getElementById('language').value;
+      const version = document.getElementById('version').value;
+      const code = document.getElementById('code').value;
+
+      const payload = {
+        language,
+        version: version || "*", // latest if blank
+        files: [{ content: code }]
+      };
+
+      try {
+        const res = await fetch("https://emkc.org/api/v2/piston/execute", {
+        //const res = await fetch("http://localhost:2000/api/v2/execute", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        document.getElementById('output').textContent =
+          (data.run.stdout || "") + (data.run.stderr || "");
+      } catch (err) {
+        document.getElementById('output').textContent = "Error: " + err;
+      }
+    }
+
+    document.getElementById('run').addEventListener('click', runCode);
+  </script>
+</body>
+</html>

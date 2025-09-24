@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>Embedded Editor</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/editor/editor.main.css">
+	<style>
+		body {
+			font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+			margin: 24px;
+			background: #0d1117;
+			color: #e6edf3;
+		}
+
+		.row {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			margin-bottom: 10px;
+		}
+
+		select,
+		button {
+			background: #161b22;
+			color: inherit;
+			border: 1px solid #30363d;
+			border-radius: 8px;
+			padding: 6px 10px;
+		}
+
+		.editor-shell {
+			border: 1px solid #30363d;
+			border-radius: 12px;
+			overflow: hidden;
+		}
+
+		#editor {
+			height: 320px;
+		}
+
+		/* embedded, not full page */
+	</style>
+</head>
+
+<body>
+	<div class="row">
+		<label>Language:</label>
+		<select id="lang">
+			<option value="javascript" selected>JavaScript</option>
+			<option value="python">Python</option>
+			<option value="c++">C++</option>
+			<option value="csharp.net">C#</option>
+			<option value="html">HTML</option>
+			<option value="css">CSS</option>
+			<option value="php">PHP</option>
+		</select>
+		<button id="run">Run</button>
+	</div>
+
+	<div class="editor-shell">
+		<div id="editor"></div>
+	</div>
+	<h3>Output:</h3>
+	<pre id="output" style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px; min-height:100px;"></pre>
+
+	<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js"></script>
+	<script>
+
+		async function runCode({ language, code, version }) {
+
+			const payload = {
+				language,
+				version: version || "*",
+				files: [{ content: code }]
+			};
+
+			try {
+				//const res = await fetch("https://emkc.org/api/v2/piston/execute", {
+				const res = await fetch("/piston/execute", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify(payload)
+				});
+
+				const data = await res.json();
+				document.getElementById('output').textContent =
+					(data.run.stdout || "") + (data.run.stderr || "");
+			} catch (err) {
+				document.getElementById('output').textContent = "Error: " + err;
+			}
+		}
+
+
+		require.config({ paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs" } });
+		window.MonacoEnvironment = {
+			getWorkerUrl: () =>
+				`data:text/javascript;charset=utf-8,${encodeURIComponent(`
+          self.MonacoEnvironment = { baseUrl: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/' };
+          importScripts('https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/base/worker/workerMain.js');
+        `)}`
+		};
+
+		let editor;
+		require([
+			"vs/editor/editor.main",
+			"vs/basic-languages/javascript/javascript",
+			"vs/basic-languages/typescript/typescript",
+			"vs/basic-languages/python/python",
+			"vs/basic-languages/cpp/cpp",
+			"vs/basic-languages/csharp/csharp",
+			"vs/basic-languages/html/html",
+			"vs/basic-languages/css/css",
+			"vs/basic-languages/php/php"
+		], function () {
+			const initial = `// Type here…
+function greet(name){ return \`Hello, \${name}!\`; }
+console.log(greet("world"));`;
+
+			editor = monaco.editor.create(document.getElementById("editor"), {
+				value: initial,
+				language: "javascript",
+				theme: "vs-dark",
+				automaticLayout: true,
+				minimap: { enabled: false },
+				wordWrap: "on",
+				scrollBeyondLastLine: false
+			});
+
+			document.getElementById('editor').addEventListener('mousedown', () => editor.focus());
+
+			const langSel = document.getElementById("lang");
+			langSel.addEventListener("change", () => {
+				monaco.editor.setModelLanguage(editor.getModel(), langSel.value);
+			});
+
+
+			document.getElementById("run").addEventListener("click", async () => {
+				const code = editor.getValue()
+				console.log("Running code in", langSel.value);
+				const language = langSel.value
+				runCode({ language, code })
+			});
+
+			editor.focus();
+		});
+	</script>
+</body>
+
+</html>

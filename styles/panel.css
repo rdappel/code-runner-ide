@@ -1,0 +1,27 @@
+
+:root {
+    --panel-w: 40vw;
+    --panel-min: 30vw;
+    --panel-max: calc(100vw - 30vw);
+    --seam-w: 6px;
+    --seam-collapsed: 30px;
+}
+
+main {
+    display: grid;
+    grid-template-columns:
+        1fr var(--seam-w) clamp(var(--panel-min), var(--panel-w), var(--panel-max));
+	flex: 1;
+}
+
+.panel {
+	height: 100%;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+.resize-handle {
+	cursor: col-resize;
+	background: var(--background-resize-handle, #30363d);
+}

@@ -1,0 +1,149 @@
+.panel-title {
+	background: #161b22;
+	color: #e6edf3;
+	font-size: 1rem;
+	font-weight: 500;
+	padding: 6px 18px;
+	border-bottom: 0;
+	letter-spacing: 0.5px;
+	margin-bottom: 0;
+}
+
+.output-panel .panel-title {
+	padding-bottom: 0;
+	margin-bottom: 0;
+}
+
+#output {
+	margin-top: 0;
+}
+/* editor.css */
+
+body {
+	font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+	margin: 0;
+	background: #0d1117;
+	color: #e6edf3;
+	height: 100vh;
+	overflow: hidden;
+}
+
+
+.top-bar {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	background: #161b22;
+	padding: 8px 16px 4px 16px;
+	border-bottom: 1px solid #676b6e;
+	height: 41px;
+	box-sizing: border-box;
+}
+
+.tab {
+	background: #161b22;
+	border: 0px;
+	border-bottom: 1px solid #676b6e;
+	color: inherit;
+	border-radius: 8px 8px 0 0;
+	padding: 8px 18px;
+	cursor: pointer;
+	font-size: 1rem;
+	margin-right: 4px;
+	outline: none;
+	transition: background 0.2s;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+.tab:hover {
+	background: #21262d;
+	color: #fff;
+}
+.tab:active, .tab:focus {
+	background: #21262d;
+}
+.tab svg {
+	display: inline-block;
+	vertical-align: middle;
+	margin: 0;
+	height: 20px;
+	width: 20px;
+}
+
+
+.split-container {
+	display: flex;
+	flex-direction: column;
+	height: calc(100vh - 48px);
+	width: 100vw;
+	position: relative;
+}
+
+.panel {
+	width: 100%;
+	overflow: hidden;
+}
+
+.editor-panel {
+	min-height: 50px;
+	height: 50vh;
+	max-height: calc(100vh - 100px);
+	transition: height 0.1s; /* Disable transition on initial load */
+}
+
+.output-panel {
+	min-height: 50px;
+	height: calc(50vh - 4px);
+	max-height: calc(100vh - 100px);
+	transition: height 0.1s; /* Disable transition on initial load */
+}
+
+.editor-panel, .output-panel {
+	min-height: 50px;
+	transition: none; /* Disable transition after page is ready */
+}
+.splitter {
+	height: 8px;
+	background: #30363d;
+	cursor: row-resize;
+	width: 100%;
+	z-index: 10;
+}
+
+#editor {
+	height: 100%;
+	width: 100%;
+	min-height: calc(50% - 36px);
+	max-height: none;
+}
+
+/* Output area styled to match Monaco dark editor background */
+#output {
+	background: #1e1e1e;
+	border: none;
+	border-radius: 0;
+	padding: 16px;
+	color: #e6edf3;
+	font-family: monospace;
+	white-space: pre-wrap;
+	height: 100%;
+	width: 100%;
+	min-height: calc(50% - 36px);
+	max-height: none;
+	overflow-y: auto;
+}
+
+/* Scrollbar styling for output area */
+#output::-webkit-scrollbar {
+	width: 8px;
+}
+
+#output::-webkit-scrollbar-thumb {
+	background: #484f58;
+	border-radius: 4px;
+}
+
+#output::-webkit-scrollbar-thumb:hover {
+	background: #6a737d;
+}

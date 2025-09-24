@@ -1,0 +1,8 @@
+{
+	"liveServer.settings.proxy": {
+		"enable": true,
+		"baseUri": "/piston",
+		"proxyUri": "http://127.0.0.1:2000/api/v2"
+	},
+	"liveServer.settings.multiRootWorkspaceName": "runner"
+}
