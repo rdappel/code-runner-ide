@@ -128,22 +128,28 @@ const initMonaco = () => {
 		const outputTypeSelect = document.getElementById('output-type')
 		let lastRunData = null
 		const runCodeWithStore = async (args) => {
+			const pistonLang = 'php'
 			const filename = 'index.php'
 			const content = args.code
 			const payload = {
-				language: 'php',
+				language: pistonLang,
 				version: args.version || '*',
 				files: [{ name: filename, content }]
 			}
+			const minDelay = 3000;
+			const startTime = Date.now();
 			try {
-				//const urlInt = '/piston/execute'
-				const urlEx = 'https://emkc.org/api/v2/piston/execute'
-				const response = await fetch(urlEx, {
+				const urlInt = '/piston/execute'
+				const response = await fetch(urlInt, {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify(payload)
 				})
 				const data = await response.json()
+				const elapsed = Date.now() - startTime;
+				if (elapsed < minDelay) {
+					await new Promise(res => setTimeout(res, minDelay - elapsed));
+				}
 				lastRunData = data
 				const compileOutput = `${data.compile?.stdout || ''}${data.compile?.stderr || ''}`.trim()
 				const runOutput = `${data.run?.stdout || ''}${data.run?.stderr || ''}`.trim()
@@ -160,6 +166,10 @@ const initMonaco = () => {
 				if (instructionsDiv) instructionsDiv.style.display = 'none'
 				if (outputDiv) outputDiv.textContent = outputText
 			} catch (err) {
+				const elapsed = Date.now() - startTime;
+				if (elapsed < minDelay) {
+					await new Promise(res => setTimeout(res, minDelay - elapsed));
+				}
 				const outputDiv = document.getElementById('output')
 				if (outputDiv) outputDiv.style.display = 'block'
 				if (instructionsDiv) instructionsDiv.style.display = 'none'
