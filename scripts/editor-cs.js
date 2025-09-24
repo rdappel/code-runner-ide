@@ -192,8 +192,9 @@ const initMonaco = () => {
 				files: [{ name: filename, content }]
 			}
 			try {
-				const urlInt = '/piston/execute'
-				const response = await fetch(urlInt, {
+				//const urlInt = '/piston/execute'
+				const urlEx = 'https://emkc.org/api/v2/piston/execute'
+				const response = await fetch(urlEx, {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify(payload)
